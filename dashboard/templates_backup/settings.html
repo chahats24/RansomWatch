@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RansomWatch | Settings</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="dashboard-layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    RansomWatch
+                </div>
+
+                <div class="brand-subtitle">
+                    File Security
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OVERVIEW -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-heading">
+                OVERVIEW
+            </div>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- MONITORING -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-heading">
+                MONITORING
+            </div>
+
+            <a href="{{ url_for('events_page') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-files"></i>
+
+                <span>File Activity</span>
+
+            </a>
+
+
+            <a href="{{ url_for('alerts_page') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-shield-exclamation"></i>
+
+                <span>Security Alerts</span>
+
+                {% if alert_count > 0 %}
+
+                <span class="nav-count">
+                    {{ alert_count }}
+                </span>
+
+                {% endif %}
+
+            </a>
+
+        </div>
+
+
+        <!-- ANALYSIS -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-heading">
+                ANALYSIS
+            </div>
+
+            <a href="{{ url_for('activity_trends') }}"
+               class="sidebar-link">
+
+                <i class="bi bi-bar-chart-line"></i>
+
+                <span>Activity Trends</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- SYSTEM -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-heading">
+                SYSTEM
+            </div>
+
+            <a href="{{ url_for('settings') }}"
+               class="sidebar-link active">
+
+                <i class="bi bi-gear"></i>
+
+                <span>Settings</span>
+
+            </a>
+
+        </div>
+
+
+        <!-- DEMO -->
+
+        <div class="sidebar-bottom">
+
+            <div class="demo-box">
+
+                <div class="demo-icon">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+
+                <div>
+
+                    <strong>
+                        Live Monitoring
+                    </strong>
+
+                    <span>
+                        Monitoring file activity
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="breadcrumb-text">
+                    Security / System / Settings
+                </div>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p class="page-description">
+                    Configure monitoring preferences and system information.
+                </p>
+
+            </div>
+
+
+            <div class="demo-status">
+
+    <span class="status-dot"></span>
+
+    <div>
+        <strong>Live Monitoring</strong>
+
+        <span>
+            Live monitoring data
+        </span>
+    </div>
+
+</div>
+
+        </header>
+
+
+        <!-- SETTINGS CONTENT -->
+
+        <div class="settings-grid">
+
+    <!-- MONITORING SETTINGS -->
+
+    <section class="page-panel settings-panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Monitoring</h2>
+
+                <p>
+                    Configure file monitoring behavior
+                </p>
+            </div>
+
+            <div class="panel-icon blue">
+                <i class="bi bi-shield-check"></i>
+            </div>
+
+        </div>
+
+
+        <div class="settings-list">
+
+            <!-- FILE MONITORING -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon blue">
+                        <i class="bi bi-broadcast"></i>
+                    </div>
+
+                    <div>
+                        <strong>File Monitoring</strong>
+
+                        <span>
+                            Monitor file-system events in the selected folder
+                        </span>
+                    </div>
+
+                </div>
+
+                <label class="setting-toggle">
+
+                    <input type="checkbox"
+                           id="monitoringToggle"
+                           checked
+                           onchange="updateSetting('monitoring', this.checked)">
+
+                    <span class="toggle-slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- MONITORING LOCATION -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon green">
+                        <i class="bi bi-folder"></i>
+                    </div>
+
+                    <div>
+                        <strong>Monitored Location</strong>
+
+                        <span>
+                            Folder selected for file monitoring
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="setting-value">
+                    Demo Folder
+                </div>
+
+            </div>
+
+
+            <!-- MONITORING MODE -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon purple">
+                        <i class="bi bi-clock-history"></i>
+                    </div>
+
+                    <div>
+                        <strong>Monitoring Mode</strong>
+
+                        <span>
+                            Real-time file-system event monitoring
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="setting-value">
+                    Event Based
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+        <!-- DETECTION SETTINGS -->
+
+    <section class="page-panel settings-panel">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Detection</h2>
+
+                <p>
+                    Configure detection and alerting components
+                </p>
+            </div>
+
+            <div class="panel-icon purple">
+                <i class="bi bi-cpu"></i>
+            </div>
+
+        </div>
+
+
+        <div class="settings-list">
+
+            <!-- SHA-256 -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon purple">
+                        <i class="bi bi-fingerprint"></i>
+                    </div>
+
+                    <div>
+                        <strong>SHA-256 Verification</strong>
+
+                        <span>
+                            Verify actual file-content changes
+                        </span>
+                    </div>
+
+                </div>
+
+                <label class="setting-toggle">
+
+                    <input type="checkbox"
+                           id="hashToggle"
+                           checked
+                           onchange="updateSetting('hash', this.checked)">
+
+                    <span class="toggle-slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- ANOMALY DETECTION -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon blue">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+
+                    <div>
+                        <strong>Anomaly Detection</strong>
+
+                        <span>
+                            Detect abnormal file-activity patterns
+                        </span>
+                    </div>
+
+                </div>
+
+                <label class="setting-toggle">
+
+                    <input type="checkbox"
+                           id="anomalyToggle"
+                           checked
+                           onchange="updateSetting('anomaly', this.checked)">
+
+                    <span class="toggle-slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- ALERT NOTIFICATIONS -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon orange">
+                        <i class="bi bi-bell"></i>
+                    </div>
+
+                    <div>
+                        <strong>Alert Notifications</strong>
+
+                        <span>
+                            Notify when suspicious activity is detected
+                        </span>
+                    </div>
+
+                </div>
+
+                <label class="setting-toggle">
+
+                    <input type="checkbox"
+                           id="notificationToggle"
+                           checked
+                           onchange="updateSetting('notifications', this.checked)">
+
+                    <span class="toggle-slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <!-- DATABASE -->
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon green">
+                        <i class="bi bi-database"></i>
+                    </div>
+
+                    <div>
+                        <strong>Event Storage</strong>
+
+                        <span>
+                            Store events and alerts in the local database
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="setting-value success">
+                    SQLite
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>  
+        <!-- APPLICATION MODE -->
+
+    <section class="page-panel settings-panel settings-wide">
+
+        <div class="panel-header">
+
+            <div>
+                <h2>Application Mode</h2>
+
+                <p>
+                    Control the current RansomWatch operating mode
+                </p>
+            </div>
+
+            <div class="panel-icon orange">
+                <i class="bi bi-sliders"></i>
+            </div>
+
+        </div>
+
+
+        <div class="settings-list">
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <div class="setting-icon orange">
+                        <i class="bi bi-controller"></i>
+                    </div>
+
+                    <div>
+                        <strong>Live Monitoring</strong>
+
+                        <span>
+                            Displays the current monitoring configuration
+                        </span>
+                    </div>
+
+                </div>
+
+                <label class="setting-toggle">
+
+                    <input type="checkbox"
+                           id="demoToggle"
+                           checked
+                           onchange="updateSetting('demo', this.checked)">
+
+                    <span class="toggle-slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>    
+
+
+            <!-- SYSTEM INFORMATION -->
+
+            <section class="page-panel settings-panel settings-wide">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            System Information
+                        </h2>
+
+                        <p>
+                            RansomWatch configuration and project status
+                        </p>
+
+                    </div>
+
+                    <div class="panel-icon green">
+                        <i class="bi bi-info-circle"></i>
+                    </div>
+
+                </div>
+
+
+                <div class="system-info-grid">
+
+
+                    <div class="info-card">
+
+                        <span>
+                            Application
+                        </span>
+
+                        <strong>
+                            RansomWatch
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span>
+                            Architecture
+                        </span>
+
+                        <strong>
+                            Flask + SQLite
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span>
+                            Interface
+                        </span>
+
+                        <strong>
+                            Dark Security UI
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-card">
+
+                        <span>
+                            Current Data
+                        </span>
+
+                        <strong>
+                           SQLite event database 
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="settings-notice">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    <div>
+
+                        <strong>
+                            Integration Status
+                        </strong>
+
+                        <p>
+                            RansomWatch uses a local SQLite database for file events and
+    security alerts. Verify the monitor and anomaly detector are
+    running before confirming live detection.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer class="dashboard-footer">
+
+            <span>
+                RansomWatch
+            </span>
+
+            <span>
+                Lightweight File Integrity Monitoring System
+            </span>
+
+        </footer>
+
+
+    </main>
+
+</div>
+<script>
+
+
+async function updateSetting(setting, enabled) {
+    const checkboxIds = {
+        monitoring: "monitoringToggle",
+        hash: "hashToggle",
+        anomaly: "anomalyToggle",
+        notifications: "notificationToggle",
+        demo: "demoToggle"
+    };
+
+    const checkbox = document.getElementById(checkboxIds[setting]);
+
+    try {
+        const response = await fetch("/api/settings", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                key: setting,
+                value: enabled
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.error || "Could not save setting.");
+        }
+
+        // Keep browser storage in sync with the shared configuration.
+        localStorage.setItem("ransomwatch_" + setting, String(enabled));
+    } catch (error) {
+        // Restore the previous saved value if the update fails.
+        if (checkbox) {
+            checkbox.checked = !enabled;
+        }
+
+        alert("Could not save setting. Please try again.");
+        console.error("Settings update failed:", error);
+    }
+}
+
+async function loadSettings() {
+    try {
+        const response = await fetch("/api/settings");
+
+        if (!response.ok) {
+            throw new Error("Could not load settings.");
+        }
+
+        const settings = await response.json();
+
+        const checkboxIds = {
+            monitoring: "monitoringToggle",
+            hash: "hashToggle",
+            anomaly: "anomalyToggle",
+            notifications: "notificationToggle",
+            demo: "demoToggle"
+        };
+
+        Object.entries(checkboxIds).forEach(([key, id]) => {
+            const checkbox = document.getElementById(id);
+
+            if (checkbox && typeof settings[key] === "boolean") {
+                checkbox.checked = settings[key];
+            }
+        });
+    } catch (error) {
+        console.error("Could not load saved settings:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadSettings);
+
+
+
+</script>
+
+</body>
+
+</html>

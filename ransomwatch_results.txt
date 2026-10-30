@@ -1,0 +1,47 @@
+RansomWatch self-collected dataset - session-wise cross-validation
+Windows: 389  (normal 251, attack-like 138)
+Sessions: 116  | folds: 5 (windows from one run never appear in both train and test)
+
+Isolation Forest, 3 original features
+  precision=0.895  recall=0.616  F1=0.730  balanced_acc=0.788
+  confusion [[TN, FP],[FN, TP]] = [[241, 10], [53, 85]]
+Random Forest, 3 original features
+  precision=0.752  recall=0.812  F1=0.780  balanced_acc=0.832
+  confusion [[TN, FP],[FN, TP]] = [[214, 37], [26, 112]]
+Random Forest, all features (with entropy)
+  precision=0.937  recall=0.971  F1=0.954  balanced_acc=0.968
+  confusion [[TN, FP],[FN, TP]] = [[242, 9], [4, 134]]
+
+Per-scenario results (Random Forest, all features (with entropy))
+  normal  batch_rename           windows=  11  false-alarm=0.00
+  normal  bulk_copy              windows=  12  false-alarm=0.00
+  normal  delete_cleanup         windows=   4  false-alarm=0.00
+  normal  edit_docs              windows=  64  false-alarm=0.00
+  normal  mixed_slow             windows=  58  false-alarm=0.00
+  normal  photo_import           windows=   8  false-alarm=0.00
+  normal  real_usage             windows=  59  false-alarm=0.12
+  normal  unzip                  windows=  14  false-alarm=0.00
+  normal  zip_create             windows=  21  false-alarm=0.10
+  attack  atk_copy_delete        windows=  23  detected=1.00
+  attack  atk_inplace            windows=  22  detected=1.00
+  attack  atk_inplace_locked     windows=  59  detected=1.00
+  attack  atk_partial_locked     windows=   5  detected=0.40
+  attack  atk_random_names       windows=  29  detected=0.97
+
+Attack runs detected at least once: 52/54
+Time from attack start to first alert (window end): median 5s, max 5s
+
+Feature importance (final model):
+  mean_entropy           0.304
+  max_entropy            0.250
+  high_entropy_events    0.147
+  high_entropy_ratio     0.096
+  files_changed          0.075
+  ext_changes            0.044
+  modifies               0.027
+  n_events               0.023
+  renames                0.016
+  creates                0.013
+  deletes                0.006
+
+Saved final model to models/ransomwatch_rf.pkl

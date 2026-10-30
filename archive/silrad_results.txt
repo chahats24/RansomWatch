@@ -1,0 +1,23 @@
+RansomWatch – SILRAD Random Forest Experiment
+
+Dataset: SILRAD Sysmon dataset
+Model: Random Forest Classifier
+Features: 36
+Evaluation samples: 140,968
+Selected threshold: 0.35
+
+Accuracy at threshold 0.50: 96.46%
+Balanced accuracy at threshold 0.50: 82.89%
+Average precision: 92.50%
+
+Results at threshold 0.35:
+Precision: 90.04%
+Recall: 83.41%
+F1-score: 86.60%
+MCC: 0.8530
+
+Confusion matrix at threshold 0.35:
+Goodware correctly classified: 126,038
+Goodware incorrectly flagged: 1,261
+Ransomware missed: 2,268
+Ransomware correctly detected: 11,401

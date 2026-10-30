@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>RansomWatch | Security Dashboard</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="dashboard-layout">
+      <!-- SIDEBAR -->
+
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="bi bi-shield-lock-fill"></i>
+          </div>
+
+          <div>
+            <div class="brand-name">RansomWatch</div>
+            <div class="brand-subtitle">File Security</div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">OVERVIEW</div>
+
+          <a href="/" class="sidebar-link active">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">MONITORING</div>
+
+          <a href="/events" class="sidebar-link">
+            <i class="bi bi-files"></i>
+            <span>File Activity</span>
+          </a>
+
+          <a href="/alerts" class="sidebar-link">
+            <i class="bi bi-shield-exclamation"></i>
+            <span>Security Alerts</span>
+
+            {% if alert_count > 0 %}
+            <span class="nav-count"> {{ alert_count }} </span>
+            {% endif %}
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-heading">ANALYSIS</div>
+
+          <a href="{{ url_for('activity_trends') }}"
+   class="sidebar-link">
+    <i class="bi bi-bar-chart-line"></i>
+    <span>Activity Trends</span>
+</a>
+        </div>
+
+        
+
+        <div class="sidebar-bottom">
+          <div class="demo-box">
+            <div class="demo-icon">
+              <i class="bi bi-info-circle"></i>
+            </div>
+
+            <div>
+              <strong>Live Monitoring</strong>
+              <span>Monitoring file activity</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+
+      <main class="main-content">
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+          <div>
+            <div class="breadcrumb-text">Security / Overview</div>
+
+            <h1>Security Overview</h1>
+
+            <p class="page-description">
+              Monitor file activity and identify suspicious behavior.
+            </p>
+          </div>
+
+          <div class="topbar-status">
+            <span class="status-dot"></span>
+
+            <div>
+              <strong>Live Monitoring</strong>
+              <small>Live monitoring data</small>
+            </div>
+          </div>
+        </header>
+
+        <!-- SECURITY NOTICE -->
+
+        {% if alert_count > 0 %}
+
+        <section class="security-notice">
+          <div class="notice-icon">
+            <i class="bi bi-shield-exclamation"></i>
+          </div>
+
+          <div class="notice-content">
+            <strong> Security attention required </strong>
+
+            <span>
+              {{ alert_count }} suspicious alert{{ 's' if alert_count != 1 else
+              '' }} detected in the monitored activity.
+            </span>
+          </div>
+
+          <a href="/alerts" class="notice-button">
+            Review Alerts
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </section>
+
+        {% else %}
+
+        <section class="security-notice safe">
+          <div class="notice-icon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+
+          <div class="notice-content">
+            <strong> No security alerts </strong>
+
+            <span> No suspicious activity has been detected. </span>
+          </div>
+        </section>
+
+        {% endif %}
+
+        <!-- KPI CARDS -->
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label"> Monitoring Status </span>
+
+              <div class="stat-icon blue">
+                <i class="bi bi-activity"></i>
+              </div>
+            </div>
+
+            <div class="stat-value">ACTIVE</div>
+
+            <div class="stat-footer">
+              <span class="status-indicator">
+                <span></span>
+                System available
+              </span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label"> File Events </span>
+
+              <div class="stat-icon purple">
+                <i class="bi bi-files"></i>
+              </div>
+            </div>
+
+            <div class="stat-value">{{ event_count }}</div>
+
+            <div class="stat-footer">Recorded file operations</div>
+          </div>
+
+          <div class="stat-card alert-card">
+            <div class="stat-header">
+              <span class="stat-label"> Security Alerts </span>
+
+              <div class="stat-icon red">
+                <i class="bi bi-shield-exclamation"></i>
+              </div>
+            </div>
+
+            <div class="stat-value">{{ alert_count }}</div>
+
+            <div class="stat-footer">
+              {% if alert_count > 0 %}
+              <span class="danger-text"> Requires review </span>
+              {% else %} No active alerts {% endif %}
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-label"> Files Observed </span>
+
+              <div class="stat-icon green">
+                <i class="bi bi-folder2-open"></i>
+              </div>
+            </div>
+
+            <div class="stat-value">{{ unique_files }}</div>
+
+            <div class="stat-footer">Unique files in event history</div>
+          </div>
+        </section>
+
+        <!-- MAIN GRID -->
+
+        <section class="content-grid">
+          <!-- ACTIVITY CHART -->
+
+          <div class="panel activity-panel">
+            <div class="panel-header">
+              <div>
+                <h2>File Activity</h2>
+
+                <p>Recent file operations over time</p>
+              </div>
+
+              <div class="panel-icon">
+                <i class="bi bi-bar-chart-line"></i>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              {% if chart_values %} {% set max_value = chart_values|max %}
+
+              <div class="activity-chart">
+                <!-- Y AXIS -->
+
+                <div class="chart-y-axis">
+                  <span>{{ max_value }}</span>
+                  <span>{{ (max_value / 2)|round|int }}</span>
+                  <span>0</span>
+                </div>
+
+                <!-- CHART AREA -->
+
+                <div class="chart-main">
+                  <div class="chart-grid">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+
+                  {% set max_value = chart_values|max %}
+
+                  <div class="chart-bars">
+                    {% for value in chart_values %} {% if max_value > 0 %} {%
+                    set height = (value / max_value * 180)|round|int %} {% else
+                    %} {% set height = 0 %} {% endif %}
+
+                    <div class="chart-bar-wrapper">
+                      <span class="chart-value">{{ value }}</span>
+
+                      <div class="chart-bar-area">
+                        <div class="chart-bar" data-height="{{ height }}"></div>
+                      </div>
+                    </div>
+
+                    {% endfor %}
+                  </div>
+
+                  <!-- LABELS -->
+
+                  <div class="chart-labels">
+                    {% for label in chart_labels %}
+
+                    <span>{{ label[11:16] }}</span>
+
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              {% else %}
+
+              <div class="chart-empty">
+                <i class="bi bi-bar-chart"></i>
+
+                <strong> No activity data available </strong>
+
+                <span>
+                  File events will appear here once monitoring begins.
+                </span>
+              </div>
+
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- ALERT PANEL -->
+
+          <div class="panel alert-panel">
+            <div class="panel-header">
+              <div>
+                <h2>Security Alerts</h2>
+
+                <p>Latest detected anomalies</p>
+              </div>
+
+              <div class="panel-icon red-icon">
+                <i class="bi bi-shield-exclamation"></i>
+              </div>
+            </div>
+
+            {% if alerts %}
+
+            <div class="alert-list">
+              {% for alert in alerts %}
+              
+<div class="alert-item">
+  <div class="alert-status-icon">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+  </div>
+
+  <div class="alert-info">
+    <div class="alert-title">Suspicious file activity</div>
+    <div class="alert-meta">{{ alert["timestamp"] }}</div>
+    <div class="alert-message">{{ alert["message"] }}</div>
+  </div>
+</div>
+
+              
+
+              {% endfor %}
+            </div>
+
+            <a href="/alerts" class="panel-link">
+              View all alerts
+              <i class="bi bi-arrow-right"></i>
+            </a>
+
+            {% else %}
+
+            <div class="empty-state">
+              <i class="bi bi-shield-check"></i>
+
+              <strong>No alerts</strong>
+
+              <span> Your monitored activity looks normal. </span>
+            </div>
+
+            {% endif %}
+          </div>
+        </section>
+
+        <!-- RECENT ACTIVITY -->
+
+        <section class="panel recent-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Recent File Activity</h2>
+
+              <p>Latest operations recorded by RansomWatch</p>
+            </div>
+
+            <a href="/events" class="view-all">
+              View all
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="activity-table">
+              <thead>
+                <tr>
+                  <th>FILE</th>
+
+                  <th>EVENT</th>
+
+                  <th>EXTENSION</th>
+
+                  <th>TIME</th>
+
+                  <th>HASH</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for event in events %}
+
+                <tr>
+                  <td>
+                    <div class="file-cell">
+                      <div class="file-icon">
+                        <i class="bi bi-file-earmark"></i>
+                      </div>
+
+                      <span> {{ event["file_path"] or event["new_path"] or event["old_path"] or "Unknown file" }} </span>
+                    </div>
+                  </td>
+
+                  <td>
+                    {% set event_type = event["event_type"].lower() %}
+
+                    <span class="event-badge {{ event_type }}">
+                      {% if event_type == "create" %}
+                      <i class="bi bi-plus-circle"></i>
+                      {% elif event_type == "modify" %}
+                      <i class="bi bi-pencil"></i>
+                      {% elif event_type == "delete" %}
+                      <i class="bi bi-trash"></i>
+                      {% elif event_type == "rename" %}
+                      <i class="bi bi-arrow-left-right"></i>
+                      {% endif %} {{ event["event_type"] }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="extension">
+                      {{ event["new_extension"] or event["old_extension"] or "—" }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="time"> {{ event["timestamp"] }} </span>
+                  </td>
+
+                  <td>
+                    {% if event["hash_after"] or event["hash_before"] %}
+
+                   <code class="hash">
+    {{ (event["hash_after"] or "N/A")[:10] }}
+    {% if event["hash_after"] %}...{% endif %}
+</code>
+
+                    {% else %}
+
+                    <span class="muted"> — </span>
+
+                    {% endif %}
+                  </td>
+                </tr>
+
+                {% else %}
+
+                <tr>
+                  <td colspan="5">
+                    <div class="table-empty">
+                      No file activity recorded yet.
+                    </div>
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- FOOTER -->
+
+        <footer class="dashboard-footer">
+          <span> RansomWatch </span>
+
+          <span> Lightweight File Integrity Monitoring System </span>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      document.querySelectorAll(".chart-bar").forEach(function (bar) {
+        bar.style.height = bar.dataset.height + "px";
+      });
+    </script>
+  </body>
+</html>

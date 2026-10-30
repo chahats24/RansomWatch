@@ -1,0 +1,9 @@
+CSU model results (deduplicated, independent test set)
+Rows after cleaning: 34323  train/val/test: 20593/6865/6865
+Features: ['File_created', 'File_Delete_archived', 'file_name_entropy', 'extension_similarity']
+Threshold (chosen on validation): 0.682
+Precision: 0.663
+Recall: 0.785
+F1: 0.719
+Balanced accuracy: 0.860
+Confusion matrix [[TN, FP],[FN, TP]]: [[5521, 384], [206, 754]]
